@@ -194,11 +194,17 @@ class VocativePolishFirstName
             mb_internal_encoding($this->_encoding);
 
             switch ($first_name) {
-                case mb_substr($first_name, -2, 2) == "ni":
+                case in_array(mb_substr($first_name, -2, 2), array("ni", "li", "zi")):
                     $this->_vocative = ['M', $first_name];
                     break;
                 case mb_substr($first_name, -2, 2) == "eł":
                     $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "le"];
+                    break;
+                case mb_substr($first_name, -2, 2) == "ił":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -1) . "le"];
+                    break;
+                case mb_substr($first_name, -2, 2) == "et":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -1) . "cie"];
                     break;
                 case mb_substr($first_name, -2, 2) == "tr":
                     $this->_vocative = ['M', $first_name . "ze"];
@@ -224,6 +230,9 @@ class VocativePolishFirstName
                 case mb_substr($first_name, -2, 2) == "st":
                     $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "ście"];
                     break;
+                case mb_substr($first_name, -2, 2) == "sł":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "śle"];
+                    break;
                 case in_array(mb_substr($first_name, -3, 3),
                         array("cja", "ria", "lia", "dia", "wia", "fia")) || in_array(mb_substr($first_name, -4, 4),
                         array("iela", "bela", "zula", "saba")):
@@ -240,6 +249,9 @@ class VocativePolishFirstName
                     break;
                 case mb_substr($first_name, -2, 2) == "ba":
                     $this->_vocative = ['M', mb_substr($first_name, 0, -1) . "o"];
+                    break;
+                case in_array(mb_substr($first_name, -2, 2), array("oe", "ue")) :
+                    $this->_vocative = ['M', $first_name];
                     break;
                 case in_array(mb_substr($first_name, -1, 1), array("n", "f", "m", "w", "p", "s", "b")):
                     $this->_vocative = ['M', $first_name . "ie"];
@@ -261,6 +273,12 @@ class VocativePolishFirstName
                     break;
                 case mb_substr($first_name, -1, 1) == "y":
                     $this->_vocative = ['M', $first_name];
+                    break;
+                case mb_substr($first_name, -1, 1) == "o":
+                    $this->_vocative = ['M', $first_name];
+                    break;
+                case mb_substr($first_name, -1, 1) == "t":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -1) . "cie"];
                     break;
                 default:
                     $this->_vocative = ['U', $first_name];
