@@ -1,0 +1,25 @@
+{
+  "name": "ecommercebox/vocative-polish-firstname",
+  "description": "Component for remake first name to Polish vocative. Odmiana polskich imion na wołacz",
+  "keywords": ["vocative","imiona","wołacz","wolacz"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mariusz Mielnik",
+      "email": "mariusz@ecbox.io"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "VocativePolishFirstName\\": "src/VocativePolishFirstName"
+    }
+  }
+}
