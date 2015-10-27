@@ -58,7 +58,7 @@ $array = $name->getVocativeArray();
 
 You can check quality using test file: test/testVocativePolishFirstName.php
 
-We are using dictionary test. [See results!](test/RESULTS.html)
+We are using dictionary test. [See results!](https://htmlpreview.github.io/?https://github.com/ecommercebox/vocative-polish-firstname/blob/master/test/RESULTS.html)
 
 Test date: 2015-10-27
 Total dictionary names: 1705 
