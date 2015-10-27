@@ -46,16 +46,6 @@
     </style>
 </head>
 <body>
-<?php
-//debug
-/*
-echo 'Mariola: ' . in_array(substr('Mariola', -4, 4), array("aja", "rola"));
-echo '<br />';
-echo substr('Mariola', 0, -1) . "u";
-echo '<br />';
-echo '<br />';
-*/
-?>
 <h3>Test first name:</h3>
 
 <form method="post" action="?form">
@@ -71,7 +61,6 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
     $test = new \ecbox\VocativePolishFirstName($input);
     echo '<strong>' . $test->getVocativeString() . '</strong>';
 }
-//phpinfo();
 ?>
 <br/>
 
@@ -92,11 +81,11 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
     <tr>
         <th class="ok">Input</th>
         <th class="ok">Dictionary vocative</th>
-        <th class="ok">Remade to vocative</th>
+        <th class="ok">Input to vocative</th>
         <th class="ok">Gender</th>
         <th class="ok">Detected gender</th>
     </tr>
-    <?php
+<?php
     $showDiffOnly = false;
 
     if (isset($_GET['diff'])) {
@@ -107,7 +96,6 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
     if (isset($_GET['gender'])) {
         $genderType = $_GET['gender'];
     }
-    // check with http://odmiana.net/
 
     # Open the File.
     if (($handle = fopen("imiona.csv", "r")) !== false) {
@@ -115,10 +103,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
         $nn = 1; //total count
         $dd = 1; //diff count
         $uu = 1; //unknown count
-        while (($data = fgetcsv($handle, 10000, ";")) !== false) {
-            # Count the total keys in the row.
-            $c = count($data);
-
+        while (($data = fgetcsv($handle, 10000, ",")) !== false) {
             $diff = false;
             $unknown = false;
 
@@ -132,26 +117,26 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
             $vocativeGender = $vocativeArray[0];
 
             $html = '';
-            $html .= "<tr>";
-            $html .= "<td class='ok'> $input</td> ";
-            $html .= "<td class='ok'> $patternName</td> ";
+            $html .= "<tr>\n";
+            $html .= "    <td class='ok'>$input&nbsp;</td>\n"; //space added for better search on page
+            $html .= "    <td class='ok'>$patternName</td>\n";
 
             if ($patternName != $vocativeFirstName) {
-                $html .= "<td class='error' > " . $vocativeFirstName . "</td> ";
+                $html .= "    <td class='error'>" . $vocativeFirstName . "</td>\n";
                 $diff = true;
             } else {
-                $html .= "<td class='ok' > " . $vocativeFirstName . "</td> ";
+                $html .= "    <td class='ok'>" . $vocativeFirstName . "</td>\n";
             }
-            $html .= "<td class='ok' > $patternGender</td> ";
+            $html .= "    <td class='ok'>$patternGender</td>\n";
             if ($patternGender != $vocativeGender) {
-                $html .= "<td class='error' > " . $vocativeGender . "</td> ";
+                $html .= "    <td class='error'>" . $vocativeGender . "</td>\n";
                 $diff = true;
                 $unknown = true;
             } else {
-                $html .= "<td class='ok' > " . $vocativeGender . "</td> ";
+                $html .= "    <td class='ok'>" . $vocativeGender . "</td>\n";
             }
 
-            $html .= "</tr> ";
+            $html .= "</tr>\n";
 
             if (!$diff && $showDiffOnly) {
                 $html = '';
@@ -180,17 +165,18 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
         # Close the File.
         fclose($handle);
     }
-    ?>
+?>
 </table>
-<br />
-<h2>Raport</h2>
+<br/>
+
+<h2>Report</h2>
 <?php
 echo 'Total dictionary names: ' . $nn . " <br />\n";
 echo 'Differences: ' . $dd . " <br />\n";
 echo 'Unknowns: ' . $uu . " <br />\n";
 echo 'The percentage of errors: ' . round(($dd / $nn) * 100) . '%' . " <br />\n";
 ?>
-<br />
-<br />
+<br/>
+<br/>
 </body>
 </html>
