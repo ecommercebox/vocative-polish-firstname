@@ -28,7 +28,7 @@ $titles = ['U' => '', 'M' => 'Szanowny Panie', 'W' => 'Szanowna Pani'];
 $name = new \ecbox\VocativePolishFirstName($input, $encoding, $titles);
 ```
 
-Get vocative first name with title
+Get vocative first name with title. Optional argument $delimiter, default is space
 ```php
 echo $name->getVocativeString();
 // output: Szanowny Panie Mariuszu

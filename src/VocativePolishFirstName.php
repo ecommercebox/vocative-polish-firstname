@@ -86,7 +86,7 @@ class VocativePolishFirstName
     }
 
     /**
-     * Returns array with vocative firs name and title.
+     * Returns array with vocative firs name and gender.
      *
      * @return array
      */
@@ -116,13 +116,53 @@ class VocativePolishFirstName
     }
 
     /**
-     * Return vocative first name with title
+     * Returns gender M - Male, W - Woman, U - Unknown
      *
      * @return string
      */
-    public function getVocativeString()
+    public function getDetectedGender()
     {
-        return $this->getDetectedTitle() . ' ' . $this->getVocativeFirstName();
+        return $this->_vocative[0];
+    }
+
+
+    /**
+     * Returns true if first name belongs to male
+     *
+     * @return bool
+     */
+    public function isMale()
+    {
+        if ($this->_vocative[0] == 'M') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if first name belongs to woman
+     *
+     * @return bool
+     */
+    public function isWoman()
+    {
+        if ($this->_vocative[0] == 'W') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Return vocative first name with title
+     *
+     * @param string $delimiter default " " (space)
+     * @return string
+     */
+    public function getVocativeString($delimiter = ' ')
+    {
+        return $this->getDetectedTitle() . $delimiter . $this->getVocativeFirstName();
     }
 
     /**
