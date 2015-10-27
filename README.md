@@ -40,11 +40,22 @@ echo $name->getVocativeFirstName();
 // output: Mariuszu
 ```
 
-
 Get title for first name
 ```php
 echo $name->getDetectedTitle();
 // output: Szanowny Panie
+```
+
+Check if male
+```php
+echo $name->isMale();
+// output: true if yes
+```
+
+Check if woman
+```php
+echo $name->isWoman();
+// output: true if yes
 ```
 
 Get array
@@ -56,7 +67,7 @@ $array = $name->getVocativeArray();
 
 # Test results
 
-You can check quality using test file: test/testVocativePolishFirstName.php
+You can check quality using test file: [testVocativePolishFirstName](test/testVocativePolishFirstName.php)
 
 We are using dictionary test. [See results!](https://htmlpreview.github.io/?https://github.com/ecommercebox/vocative-polish-firstname/blob/master/test/RESULTS.html)
 
@@ -64,13 +75,13 @@ Test date: 2015-10-27
 
 Total dictionary names: 1705 
 
-Differences: 109 (Unknowns: 103) 
+Differences: 30 (Unknowns: 22)
 
-The percentage of errors: 6% 
+The percentage of errors: 2% 
 
 # TODO
 
-* fix Unknown names
+* add manual exceptions
 
 License
 -------
