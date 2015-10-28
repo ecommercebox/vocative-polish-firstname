@@ -177,6 +177,14 @@ class VocativePolishFirstName
     }
 
     /**
+     * @param $first_name
+     */
+    protected function checkExceptions($first_name)
+    {
+
+    }
+
+    /**
      * Remake first name to Polish vocative
      *
      * @param string $first_name
@@ -221,10 +229,13 @@ class VocativePolishFirstName
                 case mb_substr($first_name, -4, 4) == "siek":
                     $this->_vocative = ['M', mb_substr($first_name, 0, -4) . "śku"];
                     break;
+                case mb_substr($first_name, -4, 4) == "niec":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -4) . "ńcu"];
+                    break;
                 case mb_substr($first_name, -3, 3) == "per":
                     $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "rze"];
                     break;
-                case mb_substr($first_name, -2, 2) == "ek":
+                case in_array(mb_substr($first_name, -2, 2), array("ek", "ko")):
                     $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "ku"];
                     break;
                 case mb_substr($first_name, -2, 2) == "st":
@@ -253,13 +264,25 @@ class VocativePolishFirstName
                 case in_array(mb_substr($first_name, -2, 2), array("oe", "ue")) :
                     $this->_vocative = ['M', $first_name];
                     break;
+                case mb_substr($first_name, -2, 2) == "oń":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -1) . "niu"];
+                    break;
                 case in_array(mb_substr($first_name, -1, 1), array("n", "f", "m", "w", "p", "s", "b")):
                     $this->_vocative = ['M', $first_name . "ie"];
+                    break;
+                case mb_substr($first_name, -3, 3) == "bel":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -3) . "ble"];
+                    break;
+                case mb_substr($first_name, -2, 2) == "ez":
+                    $this->_vocative = ['W', $first_name];
                     break;
                 case in_array(mb_substr($first_name, -1, 1), array("g", "h", "j", "k", "l", "z")):
                     $this->_vocative = ['M', $first_name . "u"];
                     break;
                 case mb_substr($first_name, -3, 3) == "der":
+                    $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "rze"];
+                    break;
+                case mb_substr($first_name, -4, 4) == "ster":
                     $this->_vocative = ['M', mb_substr($first_name, 0, -2) . "rze"];
                     break;
                 case mb_substr($first_name, -1, 1) == "r":
@@ -270,6 +293,9 @@ class VocativePolishFirstName
                     break;
                 case mb_substr($first_name, -1, 1) == "a":
                     $this->_vocative = ['W', mb_substr($first_name, 0, -1) . "o"];
+                    break;
+                case mb_substr($first_name, -1, 1) == "e":
+                    $this->_vocative = ['W', $first_name];
                     break;
                 case mb_substr($first_name, -1, 1) == "y":
                     $this->_vocative = ['M', $first_name];

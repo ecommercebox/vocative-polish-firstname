@@ -100,9 +100,9 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
     # Open the File.
     if (($handle = fopen("imiona.csv", "r")) !== false) {
         # Set the parent multidimensional array key to 0.
-        $nn = 1; //total count
-        $dd = 1; //diff count
-        $uu = 1; //unknown count
+        $nn = 0; //total count
+        $dd = 0; //diff count
+        $uu = 0; //unknown count
         while (($data = fgetcsv($handle, 10000, ",")) !== false) {
             $diff = false;
             $unknown = false;
@@ -131,7 +131,9 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
             if ($patternGender != $vocativeGender) {
                 $html .= "    <td class='error'>" . $vocativeGender . "</td>\n";
                 $diff = true;
-                $unknown = true;
+                if($vocativeGender == 'U') {
+                    $unknown = true;
+                }
             } else {
                 $html .= "    <td class='ok'>" . $vocativeGender . "</td>\n";
             }
