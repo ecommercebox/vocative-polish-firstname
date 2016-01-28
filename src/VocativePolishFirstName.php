@@ -252,7 +252,7 @@ class VocativePolishFirstName
                 case in_array(mb_substr($first_name, -4, 4), array("iola", "rola")) :
                     $this->_vocative = ['W', mb_substr($first_name, 0, -1) . "u"];
                     break;
-                case mb_substr($first_name, -3, 3) == "aja":
+                case in_array(mb_substr($first_name, -3, 3), array("aja", "sia")) :
                     $this->_vocative = ['W', mb_substr($first_name, 0, -1) . "u"];
                     break;
                 case in_array(mb_substr($first_name, -2, 2), array("ja", "ia", "la")) :
