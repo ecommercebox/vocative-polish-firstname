@@ -38,6 +38,16 @@ class VocativePolishFirstName
     private $_encoding;
 
     /**
+     * @var array
+     *
+     * [
+     *  'Ola' => ['W', 'Olu'],
+     *  'Jan' => ['M', 'Janie']
+     * ]
+     */
+    public $_exceptions = [];
+
+    /**
      * @param string $first_name
      * @param string $encoding
      * @param null /array $titles
@@ -177,11 +187,31 @@ class VocativePolishFirstName
     }
 
     /**
-     * @param $first_name
+     * @param string $first_name
+     *
+     * @return array|null
+     * @throws Exception
      */
     protected function checkExceptions($first_name)
     {
-        //TODO
+        if (!isset($this->_exceptions[$first_name])) {
+            return null;
+        }
+
+        if (count($this->_exceptions[$first_name]) != 2) {
+            throw new Exception('Invalid format');
+        }
+
+        switch ($this->_exceptions[$first_name][0]) {
+            case 'M':
+            case 'W':
+            case 'U':
+                return $this->_exceptions[$first_name];
+                break;
+
+            default:
+                throw new Exception('Undefined gender');
+        }
     }
 
     /**
@@ -200,6 +230,12 @@ class VocativePolishFirstName
         if (empty($this->_vocative)) {
             $first_name = trim($this->nameCaseConvert($first_name));
             mb_internal_encoding($this->_encoding);
+
+            if (($vocative = $this->checkExceptions($first_name)) !== null) {
+                $this->_vocative = $vocative;
+
+                return;
+            }
 
             switch ($first_name) {
                 case in_array(mb_substr($first_name, -2, 2), array("ni", "li", "zi")):
