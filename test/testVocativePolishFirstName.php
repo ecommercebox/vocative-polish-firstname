@@ -66,7 +66,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
 
 <h3>Tests from dictionary with first names:</h3>
 
-<a href="<?php echo $_SERVER["DOCUMENT_URI"]; ?>">Show all</a>
+<a href="<?php echo (isset($_SERVER["DOCUMENT_URI"]) ? $_SERVER["DOCUMENT_URI"] : '');?>">Show all</a>
 <br/>by differences:
 <a href="?diff">all diff</a> |
 <a href="?diff=M">male</a> |
