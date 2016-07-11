@@ -20,17 +20,34 @@ $input = 'MARIUSZ';
 
 //optional
 $encoding = "UTF-8";
-//default ['U' => '', 'M' => 'Panie', 'W' => 'Pani'];
-//define own titles
-$titles = ['U' => '', 'M' => 'Szanowny Panie', 'W' => 'Szanowna Pani'];
+//default group ['U' => 'Panie/Pani', 'M' => 'Panie', 'W' => 'Pani'];
+//override default group titles
+$titles = ['U' => '', 'M' => 'Drogi Panie', 'W' => 'Droga Pani'];
+//override or add new exeptions, where W = Woman, M = Man
+$exeptions = [
+    'Ola' => ['W', 'Oluu'],
+    'Jan' => ['M', 'Janku']
+];
 
 //init object
-$name = new \ecbox\VocativePolishFirstName($input, $encoding, $titles);
+$name = new \ecbox\VocativePolishFirstName($input, $encoding, $titles, $exeptions);
 ```
 
-Get vocative first name with title. Optional argument $delimiter, default is space
+Setup additional titles group
+```php
+$titles = ['U' => 'Szanowna(y) Pani(e)', 'M' => 'Szanowny Panie', 'W' => 'Szanowna Pani'];
+$name->setTitles($titles, 'polite');
+```
+
+Get vocative first name with default title definition. Optional argument $delimiter, default is space and title definition group name
 ```php
 echo $name->getVocativeString();
+// output: Drogi Panie Mariuszu
+```
+
+Get vocative first name with custom title definition. Optional argument $delimiter, default is space and title definition group name
+```php
+echo $name->getVocativeString('polite');
 // output: Szanowny Panie Mariuszu
 ```
 
@@ -40,9 +57,15 @@ echo $name->getVocativeFirstName();
 // output: Mariuszu
 ```
 
-Get title for first name
+Get default title for first name
 ```php
 echo $name->getDetectedTitle();
+// output: Drogi Panie
+```
+
+Get custom group title for first name
+```php
+echo $name->getDetectedTitle('polite');
 // output: Szanowny Panie
 ```
 
@@ -71,17 +94,14 @@ You can check quality using test file: [testVocativePolishFirstName](test/testVo
 
 We are using dictionary test. [See results!](https://htmlpreview.github.io/?https://github.com/ecommercebox/vocative-polish-firstname/blob/master/test/test_results.html)
 
-Test date: 2015-10-28
+Test date: 2016-07-11
 
 Total dictionary names: 1704 
 
-Differences: 18 (Unknowns: 3)
+Differences: 0
 
-The percentage of errors: 1% 
+The percentage of errors: 0% 
 
-# TODO
-
-* add manual exceptions
 
 License
 -------

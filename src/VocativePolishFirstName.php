@@ -4,7 +4,7 @@
  *
  * Component for remake first name to Polish vocative
  *
- * @author  Mariusz Mielnik <mariusz@ecbox.io>
+ * @author  Mariusz Mielnik <mariusz@ecbox.pl>
  * @license  MIT
  *
  */
@@ -14,14 +14,14 @@ namespace ecbox;
 class VocativePolishFirstName
 {
     /**
-     * Polish title definitions array
+     * Polish definitions array for default group
      *
      * U = Unknown (not detected)
      * M = Male
      * W = Woman
      *
      */
-    private $_titles = ['U' => '', 'M' => 'Panie', 'W' => 'Pani'];
+    private $_titles = ['default' => ['U' => 'Panie/Pani', 'M' => 'Panie', 'W' => 'Pani']];
 
     /**
      * Vocative array
@@ -38,38 +38,71 @@ class VocativePolishFirstName
     private $_encoding;
 
     /**
-     * @var array
+     * List of exceptions
      *
-     * [
-     *  'Ola' => ['W', 'Olu'],
-     *  'Jan' => ['M', 'Janie']
-     * ]
+     * @var array
      */
-    public $_exceptions = [];
+    public $exceptions = [
+        'Ola' => ['W', 'Olu'],
+        'Saba' => ['W', 'Sabo'],
+        'Noemi' => ['W', 'Noemi'],
+        'Sonia' => ['W', 'Soniu'],
+        'Luba' => ['W', 'Lubo'],
+        'Jeremi' => ['M', 'Jeremi'],
+        'Kirył' => ['M', 'Kiryle'],
+        'Miriam' => ['W', 'Miriam'],
+        'Margot' => ['W', 'Margot'],
+        'Ingrid' => ['W', 'Ingrid'],
+        'Lew' => ['M', 'Lwie'],
+        'Narcyz' => ['M', 'Narcyzie'],
+        'Kosma' => ['M', 'Kosmo'],
+        'Bonawentura' => ['M', 'Bonawenturo'],
+        'Carmen' => ['W', 'Carmen'],
+        'Doris' => ['W', 'Doris'],
+        'Dolores' => ['W', 'Dolores'],
+        'Abigail' => ['W', 'Abigail'],
+    ];
 
     /**
      * @param string $first_name
      * @param string $encoding
-     * @param null /array $titles
+     * @param array|null $titles
+     * @param array|null $exceptions
      * @throws \Exception
      */
-    public function __construct($first_name, $encoding = "UTF-8", $titles = null)
+    public function __construct($first_name, $encoding = "UTF-8", $titles = null, $exceptions = null)
     {
         if (!is_null($titles)) {
             $this->setTitles($titles);
         }
+
+        if (!is_null($exceptions)) {
+            $this->exceptions = array_merge($this->exceptions, $exceptions);
+        }
+
         $this->setEncoding($encoding);
         $this->remakeToVocative($first_name);
     }
 
     /**
-     * Returns titles definition
+     * Return default titles definition
      *
      * @return array
      */
     public function getTitles()
     {
-        return $this->_titles;
+        return $this->_titles['default'];
+    }
+
+    /**
+     * Returns titles definition by group name
+     *
+     * @param string $group
+     * @return array
+     */
+    public function getTitlesByGroup($group = 'default')
+    {
+        return $this->_titles[$group];
     }
 
     /**
@@ -78,11 +111,16 @@ class VocativePolishFirstName
      * for english ex. ['U' => '', 'M' => 'Mrs.', 'W' => 'Mr.'];
      * for polish ex. ['U' => '', 'M' => 'Szanowny Panie', 'W' => 'Szanowna Pani'];
      *
+     * For multiple titles definitions use group name
+     * for polish ex. group: 'default' => ['U' => 'Panie/Pani', 'M' => 'Panie', 'W' => 'Pani'];
+     * for polish ex. group: 'polite' => ['U' => '', 'M' => 'Szanowny Panie', 'W' => 'Szanowna Pani'];
+     *
      * @param array $titles
+     * @param string $group
      */
-    public function setTitles($titles)
+    public function setTitles($titles, $group = 'default')
     {
-        $this->_titles = $titles;
+        $this->_titles[$group] = $titles;
     }
 
     /**
@@ -118,11 +156,12 @@ class VocativePolishFirstName
     /**
      * Returns title
      *
+     * @param string $group
      * @return string
      */
-    public function getDetectedTitle()
+    public function getDetectedTitle($group = 'default')
     {
-        return $this->_titles[$this->_vocative[0]];
+        return $this->_titles[$group][$this->_vocative[0]];
     }
 
     /**
@@ -168,11 +207,12 @@ class VocativePolishFirstName
      * Return vocative first name with title
      *
      * @param string $delimiter default " " (space)
+     * @param string $group
      * @return string
      */
-    public function getVocativeString($delimiter = ' ')
+    public function getVocativeString($delimiter = ' ', $group = 'default')
     {
-        return $this->getDetectedTitle() . $delimiter . $this->getVocativeFirstName();
+        return $this->getDetectedTitle($group) . $delimiter . $this->getVocativeFirstName();
     }
 
     /**
@@ -186,31 +226,31 @@ class VocativePolishFirstName
         return mb_convert_case(mb_strtolower($name), MB_CASE_TITLE, $this->_encoding);
     }
 
+
     /**
      * @param string $first_name
-     *
      * @return array|null
-     * @throws Exception
+     * @throws \Exception
      */
     protected function checkExceptions($first_name)
     {
-        if (!isset($this->_exceptions[$first_name])) {
+        if (!isset($this->exceptions[$first_name])) {
             return null;
         }
 
-        if (count($this->_exceptions[$first_name]) != 2) {
-            throw new Exception('Invalid format');
+        if (count($this->exceptions[$first_name]) != 2) {
+            throw new \Exception('Invalid format');
         }
 
-        switch ($this->_exceptions[$first_name][0]) {
+        switch ($this->exceptions[$first_name][0]) {
             case 'M':
             case 'W':
             case 'U':
-                return $this->_exceptions[$first_name];
+                return $this->exceptions[$first_name];
                 break;
 
             default:
-                throw new Exception('Undefined gender');
+                throw new \Exception('Undefined gender');
         }
     }
 

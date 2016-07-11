@@ -66,7 +66,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
 
 <h3>Tests from dictionary with first names:</h3>
 
-<a href="<?php echo (isset($_SERVER["DOCUMENT_URI"]) ? $_SERVER["DOCUMENT_URI"] : '');?>">Show all</a>
+<a href="<?php echo(isset($_SERVER["DOCUMENT_URI"]) ? $_SERVER["DOCUMENT_URI"] : ''); ?>">Show all</a>
 <br/>by differences:
 <a href="?diff">all diff</a> |
 <a href="?diff=M">male</a> |
@@ -85,7 +85,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
         <th class="ok">Gender</th>
         <th class="ok">Detected gender</th>
     </tr>
-<?php
+    <?php
     $showDiffOnly = false;
 
     if (isset($_GET['diff'])) {
@@ -111,7 +111,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
             $patternName = $data[1];
             $patternGender = $data[2];
 
-            $v = new \ecbox\VocativePolishFirstName($input);
+            $v = new \ecbox\VocativePolishFirstName($input, 'UTF-8', null);
             $vocativeFirstName = $v->getVocativeFirstName();
             $vocativeArray = $v->getVocativeArray();
             $vocativeGender = $vocativeArray[0];
@@ -131,7 +131,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
             if ($patternGender != $vocativeGender) {
                 $html .= "    <td class='error'>" . $vocativeGender . "</td>\n";
                 $diff = true;
-                if($vocativeGender == 'U') {
+                if ($vocativeGender == 'U') {
                     $unknown = true;
                 }
             } else {
@@ -167,7 +167,7 @@ if (isset($_GET['form']) && !empty($_POST['firstname'])) {
         # Close the File.
         fclose($handle);
     }
-?>
+    ?>
 </table>
 <br/>
 
