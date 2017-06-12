@@ -61,6 +61,7 @@ class VocativePolishFirstName
         'Doris' => ['W', 'Doris'],
         'Dolores' => ['W', 'Dolores'],
         'Abigail' => ['W', 'Abigail'],
+        'Nikolett' => ['W', 'Nikoletto']
     ];
 
     /**
